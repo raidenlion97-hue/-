@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>วงล้อนำโชค | Lucky Wheel 50</title>
+  <style>
+    :root{
+      --bg:#050814;
+      --bg2:#0b1020;
+      --panel:rgba(255,255,255,.05);
+      --line:rgba(255,255,255,.12);
+      --text:#f7f8ff;
+      --muted:rgba(247,248,255,.72);
+      --gold:#f1c45b;
+      --mint:#8bf0d0;
+      --purple:#6d4bd6;
+      --blue:#182443;
+      --shadow:0 24px 70px rgba(0,0,0,.45);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(241,196,91,.18), transparent 24%),
+        radial-gradient(circle at 80% 18%, rgba(139,240,208,.12), transparent 18%),
+        linear-gradient(160deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    .app{width:min(1600px, calc(100% - 18px)); margin:0 auto; padding:12px 0 18px;}
+    .shell{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 0.92fr 1.38fr;
+      min-height:calc(100vh - 24px);
+    }
+
+    .left{
+      padding:22px 24px 18px;
+      border-right:1px solid rgba(255,255,255,.08);
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    .left::after{
+      content:"";
+      position:absolute; inset:0;
+      pointer-events:none;
+      background:radial-gradient(circle at 55% 18%, rgba(241,196,91,.08), transparent 28%);
+    }
+
+    .brand-row{display:flex; align-items:center; justify-content:space-between; gap:12px; position:relative; z-index:1;}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:900;}
+    .brand-mark{
+      width:52px; height:52px; border-radius:18px; display:grid; place-items:center;
+      background:linear-gradient(135deg, var(--gold), #fff0be);
+      color:#261800; font-size:24px; box-shadow:0 0 0 6px rgba(241,196,91,.08);
+    }
+    .brand-name{font-size:1.16rem; line-height:1.1}
+    .brand-sub{font-size:.86rem; color:var(--muted); font-weight:700}
+
+    .nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .nav a{
+      text-decoration:none; color:var(--text); font-weight:800; font-size:.96rem;
+      padding:11px 16px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.045);
+      transition:.2s ease;
+    }
+    .nav a:hover{transform:translateY(-2px); border-color:rgba(241,196,91,.45)}
+
+    .hero{margin-top:18px; position:relative; z-index:1}
+    .title{
+      margin:0;
+      font-size:clamp(2.8rem, 5.2vw, 4.8rem);
+      line-height:.95;
+      letter-spacing:-.04em;
+      font-weight:900;
+      max-width:10ch;
+    }
+    .title span{display:block; color:#ffe29a}
+    .desc{
+      margin:16px 0 0;
+      max-width:42ch;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:1.02rem;
+    }
+
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:22px}
+    .btn{
+      border:none; cursor:pointer; text-decoration:none; font:inherit;
+      padding:16px 22px; border-radius:18px; font-weight:900; box-shadow:var(--shadow);
+      display:inline-flex; align-items:center; gap:10px; transition:.2s ease;
+    }
+    .btn:hover{transform:translateY(-2px) scale(1.01)}
+    .btn-primary{background:linear-gradient(135deg, var(--gold), #ffe8a8); color:#261800}
+    .btn-secondary{background:rgba(255,255,255,.06); color:var(--text); border:1px solid var(--line)}
+
+    .feature-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:18px}
+    .feature{
+      background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:18px 16px;
+      min-height:130px; box-shadow:var(--shadow);
+    }
+    .feature .icon{font-size:1.5rem; color:var(--gold)}
+    .feature h4{margin:10px 0 6px; font-size:1.06rem}
+    .feature p{margin:0; color:var(--muted); line-height:1.65; font-size:.96rem}
+
+    .result-card{
+      margin-top:auto;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      min-height:220px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:12px;
+      align-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .result-card::before{
+      content:"";
+      position:absolute; inset:-40px -30px auto auto;
+      width:180px; height:180px; border-radius:50%;
+      background:radial-gradient(circle, rgba(241,196,91,.18), transparent 60%);
+      pointer-events:none;
+    }
+    .result-copy h3{margin:0 0 8px; font-size:1.18rem}
+    .result-copy p{margin:0; color:var(--muted); line-height:1.75}
+    .gift{justify-self:center; font-size:74px; opacity:.92; filter:drop-shadow(0 10px 25px rgba(0,0,0,.35))}
+
+    .bottom-info{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:auto}
+    .info-card{
+      border-radius:22px; border:1px solid var(--line); background:rgba(255,255,255,.045); padding:16px;
+      box-shadow:var(--shadow);
+    }
+    .info-card .k{font-size:1.18rem; font-weight:900; color:#ffe39c; margin-bottom:8px}
+    .info-card .v{color:var(--muted); line-height:1.6; font-size:.96rem}
+
+    .right{
+      padding:18px 18px 16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+      display:grid;
+      grid-template-rows:auto auto auto 1fr;
+      gap:14px;
+    }
+
+    .topbar{display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap; position:relative; z-index:1;}
+    .chip{
+      padding:11px 16px; border-radius:999px; border:1px solid var(--line); background:rgba(255,255,255,.045);
+      color:var(--text); font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    }
+
+    .wheel-card{
+      position:relative;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:rgba(255,255,255,.035);
+      box-shadow:var(--shadow);
+      padding:18px 16px 18px;
+      overflow:hidden;
+    }
+    .wheel-card::before{
+      content:""; position:absolute; inset:-60px;
+      background:radial-gradient(circle at 50% 35%, rgba(241,196,91,.16), transparent 38%);
+      pointer-events:none;
+    }
+
+    .pointer{
+      position:absolute; top:8px; left:50%; transform:translateX(-50%); z-index:5;
+      width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:34px solid #fff;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));
+    }
+
+    .wheel-wrap{display:grid; place-items:center; padding-top:14px;}
+    .wheel-shell{
+      width:min(840px, 96%);
+      aspect-ratio:1;
+      border-radius:50%;
+      position:relative;
+      padding:15px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.08), transparent 34%),
+        linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.08),
+        0 0 14px rgba(241,196,91,.45),
+        0 0 28px rgba(241,196,91,.28),
+        0 0 60px rgba(241,196,91,.18),
+        0 30px 90px rgba(0,0,0,.52);
+    }
+
+    .wheel-rotate{
+      width:100%; height:100%; position:relative;
+      transform:rotate(0deg);
+      transition:transform 4.8s cubic-bezier(.16,.88,.14,1);
+      will-change:transform;
+    }
+
+    svg#wheelSvg{width:100%; height:100%; display:block; overflow:visible}
+    .sector{stroke:rgba(255,255,255,.10); stroke-width:1.2}
+    .number-text{
+      font-size:15px;
+      font-weight:900;
+      fill:#fff;
+      paint-order:stroke;
+      stroke:rgba(0,0,0,.18);
+      stroke-width:1.5;
+    }
+    .wheel-rim{fill:none; stroke:rgba(255,255,255,.16); stroke-width:8}
+    .wheel-rim-2{fill:none; stroke:rgba(241,196,91,.25); stroke-width:2}
+    .hub{
+      fill:url(#hubGrad);
+      stroke:rgba(255,255,255,.14);
+      stroke-width:2;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,.28));
+    }
+    .hub-star{font-size:54px; fill:#ffe17f; text-anchor:middle; dominant-baseline:middle;}
+
+    .wheel-controls{display:grid; gap:10px; margin-top:12px}
+    .result-box{
+      padding:24px 18px; border-radius:18px; background:rgba(0,0,0,.26); border:1px solid rgba(255,255,255,.08);
+      color:#fff4cc; text-align:center; font-weight:900; min-height:90px; display:grid; place-items:center;
+      font-size:1.55rem; line-height:1.25;
+    }
+    .spin-btn{
+      width:100%;
+      border:none; border-radius:999px; padding:18px 22px; font-weight:900; font-size:1.2rem; cursor:pointer;
+      background:linear-gradient(135deg, var(--gold), #ffe8a8); color:#251800;
+      box-shadow:0 14px 28px rgba(241,196,91,.22);
+    }
+
+    .panels{display:grid; grid-template-columns:1fr 1.15fr; gap:14px; min-height:0}
+    .panel{
+      background:var(--panel); border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow);
+      padding:16px; min-height:0; overflow:hidden;
+    }
+    .panel h3{margin:0 0 8px; font-size:1.08rem}
+    .panel .hint{margin:0 0 12px; color:var(--muted); font-size:.94rem; line-height:1.55}
+
+    textarea, input, select{
+      width:100%; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06);
+      color:var(--text); outline:none; font:inherit; padding:12px 13px;
+    }
+    textarea{min-height:164px; resize:vertical; line-height:1.5}
+
+    .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .mini-btn{
+      border:none; cursor:pointer; border-radius:14px; padding:11px 14px; font-weight:800; font-size:.96rem;
+      background:rgba(255,255,255,.08); color:var(--text); border:1px solid rgba(255,255,255,.12);
+    }
+    .mini-btn.primary{background:linear-gradient(135deg, var(--gold), #ffe8a8); color:#261800}
+    .mini-btn.success{background:linear-gradient(135deg, #1f6f48, #2a9b62); color:#effff5; border-color:rgba(126,240,199,.25)}
+
+    .toggle-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px}
+    .toggle-label{display:flex; align-items:center; gap:10px; font-weight:800; color:#fff}
+    .toggle-label input{width:18px; height:18px}
+
+    .count-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 10px}
+    .count-pill{
+      padding:8px 12px; border-radius:999px; border:1px solid rgba(241,196,91,.28); background:rgba(241,196,91,.08);
+      color:#ffe8af; font-size:.88rem; font-weight:800;
+    }
+
+    .grid-50{
+      display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px;
+      max-height:430px; overflow:auto; padding-right:4px;
+    }
+    .grid-50 .slot{
+      width:100%; border-radius:12px; padding:10px 8px; text-align:center; font-size:.92rem;
+      background:rgba(255,255,255,.05); color:#e9ecf8; border:1px solid rgba(255,255,255,.09);
+    }
+    .grid-50 .slot::placeholder{color:rgba(255,255,255,.34)}
+
+    .latest{
+      grid-column:1 / -1; margin-top:2px; padding:14px 16px 12px;
+      border-radius:22px; border:1px solid var(--line); background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+    .latest h4{margin:0 0 10px; font-size:1rem}
+    .chips{display:flex; gap:10px; overflow:auto; padding-bottom:6px}
+    .chip-item{
+      flex:0 0 auto; padding:10px 14px; border-radius:999px; background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10); color:#eef1ff; font-weight:800; white-space:nowrap;
+    }
+
+    .bottom-info{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:auto}
+    .info-card{
+      border-radius:22px; border:1px solid var(--line); background:rgba(255,255,255,.045); padding:16px;
+      box-shadow:var(--shadow);
+    }
+    .info-card .k{font-size:1.18rem; font-weight:900; color:#ffe39c; margin-bottom:8px}
+    .info-card .v{color:var(--muted); line-height:1.6; font-size:.96rem}
+
+    .small-muted{color:var(--muted); font-size:.88rem}
+
+    @media (max-width: 1240px){
+      .grid{grid-template-columns:1fr}
+      .left{border-right:none; border-bottom:1px solid rgba(255,255,255,.08)}
+      .wheel-shell{width:min(900px, 96%)}
+    }
+    @media (max-width: 860px){
+      .feature-row,.bottom-info,.panels{grid-template-columns:1fr}
+      .nav{justify-content:flex-start}
+      .title{max-width:none}
+      .grid-50{grid-template-columns:repeat(2, minmax(0,1fr)); max-height:520px}
+    }
+    @media (max-width: 560px){
+      .app{width:calc(100% - 8px)}
+      .left,.right{padding:16px}
+      .title{font-size:2.55rem}
+      .wheel-shell{width:100%}
+      .grid-50{grid-template-columns:1fr}
+      .spin-btn{font-size:1.05rem}
+      .result-box{font-size:1rem; min-height:76px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="shell">
+      <div class="grid">
+        <section class="left">
+          <div class="brand-row">
+            <div class="brand">
+              <div class="brand-mark">🏆</div>
+              <div>
+                <div class="brand-name">วงล้อนำโชค</div>
+                <div class="brand-sub">หมุนแล้ว ลุ้นได้ทุกครั้ง</div>
+              </div>
+            </div>
+            <div class="nav">
+              <a href="#wheel">หมุนวงล้อ</a>
+              <a href="#names">แก้ชื่อ</a>
+              <a href="#winners">ผู้โชคดี</a>
+            </div>
+          </div>
+
+          <div class="hero">
+            <h1 class="title">หมุนแล้ว <span>ลุ้นได้ทุกครั้ง</span></h1>
+            <p class="desc">เว็บวงล้อนำโชคแบบหน้าเดียว ปรับชื่อเองได้ หมุนจริงได้ มี 50 ช่องบนวงล้อ และมีรายชื่อผู้โชคดี 50 ช่องสำหรับกรอกชื่อได้ทันที</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#wheel">🎯 ไปหมุนเลย</a>
+              <a class="btn btn-secondary" href="#names">✍️ ตั้งชื่อบนวงล้อ</a>
+            </div>
+          </div>
+
+          <div class="feature-row">
+            <div class="feature"><div class="icon">⚡</div><h4>กดได้จริง</h4><p>หมุนวงล้อพร้อมเอฟเฟกต์ลื่น ดูพรีเมียมเหมือนในภาพตัวอย่าง</p></div>
+            <div class="feature"><div class="icon">✏️</div><h4>ปรับแต่งได้</h4><p>เปลี่ยนชื่อบนวงล้อได้ตามต้องการ และเลือกชื่อที่จะหยุดได้</p></div>
+            <div class="feature"><div class="icon">👥</div><h4>50 ช่อง</h4><p>มีช่องรายชื่อผู้โชคดี 50 ช่อง พร้อมแสดงรายชื่อใหม่ด้านล่าง</p></div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-copy">
+              <h3>ผลลัพธ์ล่าสุด</h3>
+              <p id="resultText">ยังไม่หมุน</p>
+            </div>
+            <div class="gift">🎁</div>
+          </div>
+
+          <div class="bottom-info">
+            <div class="info-card"><div class="k">กดได้จริง</div><div class="v">วงล้อพร้อมปุ่มหมุน เอฟเฟกต์สวย ลื่น และดูเด่นบนหน้าจอ</div></div>
+            <div class="info-card"><div class="k">ปรับเองได้</div><div class="v">เปลี่ยนชื่อบนวงล้อหรือรายชื่อผู้โชคดีได้ตามต้องการ</div></div>
+            <div class="info-card"><div class="k">50 ช่อง</div><div class="v">รายชื่อผู้โชคดี 50 ช่อง เพื่อให้ตรงกับแบบที่คุณต้องการ</div></div>
+          </div>
+        </section>
+
+        <section class="right">
+          <div class="topbar">
+            <a class="chip" href="#wheel">🔁 หมุนล้อ</a>
+            <a class="chip" href="#names">✎ แก้ไขรายชื่อ</a>
+            <a class="chip" href="#winners">👥 ผู้โชคดี</a>
+          </div>
+
+          <div class="wheel-card" id="wheel">
+            <div class="pointer"></div>
+            <div class="wheel-wrap">
+              <div class="wheel-shell">
+                <div id="wheelRotate" class="wheel-rotate">
+                  <svg id="wheelSvg" viewBox="0 0 500 500" aria-label="วงล้อ 50 ช่อง"></svg>
+                </div>
+              </div>
+            </div>
+            <div class="wheel-controls">
+              <div class="result-box" id="wheelResult">ผลลัพธ์: ยังไม่หมุน</div>
+              <button id="spinBtn" class="spin-btn">หมุนวงล้อ</button>
+            </div>
+          </div>
+
+          <div class="panels" id="names">
+            <div class="panel">
+              <div class="count-row">
+                <h3>ตั้งชื่อบนวงล้อ</h3>
+                <div class="count-pill" id="wheelCount">50 รายการ</div>
+              </div>
+              <p class="hint">ใส่ชื่อ 50 รายการ แยกด้วยบรรทัดใหม่ แล้วกดอัปเดตเพื่อแสดงบนวงล้อ</p>
+              <textarea id="wheelNamesInput"></textarea>
+              <div class="toggle-row">
+                <label class="toggle-label"><input id="lockResult" type="checkbox" checked /> ล็อกผลการหมุน</label>
+                <span class="small-muted">ปิดได้ ถ้าต้องการสุ่มจริง</span>
+              </div>
+              <label class="small-muted" for="forceIndex">เลือกชื่อที่ต้องการล็อก</label>
+              <select id="forceIndex"></select>
+              <div class="btn-row">
+                <button class="mini-btn primary" id="applyWheelNames">อัปเดตชื่อบนวงล้อ</button>
+                <button class="mini-btn" id="resetWheelNames">คืนค่าเริ่มต้น</button>
+              </div>
+            </div>
+
+            <div class="panel" id="winners">
+              <div class="count-row">
+                <h3>รายชื่อผู้โชคดี 50 ช่อง</h3>
+                <div class="count-pill" id="winnerCount">0 / 50</div>
+              </div>
+              <p class="hint">กรอกชื่อในช่องด้านล่างได้เลย ระบบจะแสดงรายชื่อที่อัปเดตใหม่ให้อัตโนมัติ</p>
+              <div class="grid-50" id="winnerGrid"></div>
+              <label class="small-muted" for="quickWinner">ชื่อใหม่</label>
+              <input id="quickWinner" type="text" placeholder="พิมพ์ชื่อผู้โชคดี" />
+              <div class="btn-row">
+                <button class="mini-btn primary" id="updateWinners">อัปเดตรายชื่อทั้งหมด</button>
+                <button class="mini-btn success" id="fillEmptyWinner">เพิ่มชื่อเข้าช่องว่าง</button>
+                <button class="mini-btn" id="clearWinners">ล้างข้อมูล</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="latest">
+            <h4>รายชื่อผู้โชคดีล่าสุด</h4>
+            <div class="chips" id="latestChips"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <radialGradient id="hubGrad" cx="35%" cy="35%" r="70%">
+        <stop offset="0%" stop-color="#fff7dd"/>
+        <stop offset="62%" stop-color="#f2ce82"/>
+        <stop offset="100%" stop-color="#d09b23"/>
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <script>
+    const total = 50;
+    const colors = ['#f1c45b', '#1b2948', '#8bf0d0', '#6d4bd6'];
+    const defaultWheelNames = Array.from({ length: total }, (_, i) => `คุณ ${i + 1}`);
+
+    const wheelSvg = document.getElementById('wheelSvg');
+    const wheelRotate = document.getElementById('wheelRotate');
+    const resultText = document.getElementById('resultText');
+    const wheelResult = document.getElementById('wheelResult');
+    const spinBtn = document.getElementById('spinBtn');
+    const wheelNamesInput = document.getElementById('wheelNamesInput');
+    const forceIndex = document.getElementById('forceIndex');
+    const lockResult = document.getElementById('lockResult');
+    const applyWheelNames = document.getElementById('applyWheelNames');
+    const resetWheelNames = document.getElementById('resetWheelNames');
+    const wheelCount = document.getElementById('wheelCount');
+    const winnerGrid = document.getElementById('winnerGrid');
+    const winnerCount = document.getElementById('winnerCount');
+    const latestChips = document.getElementById('latestChips');
+    const quickWinner = document.getElementById('quickWinner');
+    const updateWinners = document.getElementById('updateWinners');
+    const fillEmptyWinner = document.getElementById('fillEmptyWinner');
+    const clearWinners = document.getElementById('clearWinners');
+
+    let names = [...defaultWheelNames];
+    let rotation = 0;
+    let spinning = false;
+
+    function polarToCartesian(cx, cy, r, angleDeg) {
+      const rad = (angleDeg - 90) * Math.PI / 180;
+      return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+    }
+
+    function describeSector(cx, cy, r, startAngle, endAngle) {
+      const p1 = polarToCartesian(cx, cy, r, endAngle);
+      const p2 = polarToCartesian(cx, cy, r, startAngle);
+      const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+      return ['M', cx, cy, 'L', p1.x, p1.y, 'A', r, r, 0, largeArcFlag, 0, p2.x, p2.y, 'Z'].join(' ');
+    }
+
+    function getWheelNames(){
+      const list = wheelNamesInput.value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, total);
+      while(list.length < total) list.push(`คุณ ${list.length + 1}`);
+      return list;
+    }
+
+    function renderWheel(){
+      names = getWheelNames();
+      wheelCount.textContent = `${names.length} รายการ`;
+      forceIndex.innerHTML = '<option value="">สุ่มชื่อ</option>';
+      wheelSvg.innerHTML = '';
+
+      const cx = 250, cy = 250, r = 240;
+      const step = 360 / total;
+
+      const border = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      border.setAttribute('cx', cx);
+      border.setAttribute('cy', cy);
+      border.setAttribute('r', r + 2);
+      border.setAttribute('class', 'wheel-rim');
+      wheelSvg.appendChild(border);
+
+      for(let i = 0; i < total; i++){
+        const start = i * step;
+        const end = start + step;
+        const color = colors[i % colors.length];
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', describeSector(cx, cy, r, start, end));
+        path.setAttribute('fill', color);
+        path.setAttribute('class', 'sector');
+        wheelSvg.appendChild(path);
+
+        const mid = start + step / 2;
+        const textPos = polarToCartesian(cx, cy, 205, mid);
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', textPos.x);
+        text.setAttribute('y', textPos.y);
+        text.setAttribute('class', 'number-text');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'middle');
+        text.setAttribute('transform', `rotate(${mid + 90} ${textPos.x} ${textPos.y})`);
+        text.textContent = names[i] || String(i + 1);
+        wheelSvg.appendChild(text);
+
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        opt.textContent = `${i + 1}. ${names[i]}`;
+        forceIndex.appendChild(opt);
+      }
+
+      const rim2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      rim2.setAttribute('cx', cx);
+      rim2.setAttribute('cy', cy);
+      rim2.setAttribute('r', r - 8);
+      rim2.setAttribute('class', 'wheel-rim-2');
+      wheelSvg.appendChild(rim2);
+
+      const hubCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      hubCircle.setAttribute('cx', cx);
+      hubCircle.setAttribute('cy', cy);
+      hubCircle.setAttribute('r', 56);
+      hubCircle.setAttribute('class', 'hub');
+      wheelSvg.appendChild(hubCircle);
+
+      const hubStar = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      hubStar.setAttribute('x', cx);
+      hubStar.setAttribute('y', cy + 4);
+      hubStar.setAttribute('class', 'hub-star');
+      hubStar.setAttribute('text-anchor', 'middle');
+      hubStar.setAttribute('dominant-baseline', 'middle');
+      hubStar.textContent = '★';
+      wheelSvg.appendChild(hubStar);
+
+      const preview = names.slice(0, 5).join(' • ');
+      resultText.textContent = `อัปเดตชื่อบนวงล้อแล้ว: ${preview}${names.length > 5 ? ' ...' : ''}`;
+      wheelResult.textContent = `อัปเดตชื่อบนวงล้อแล้ว: ${preview}${names.length > 5 ? ' ...' : ''}`;
+    }
+
+    function buildWinnerGrid(){
+      winnerGrid.innerHTML = '';
+      for(let i = 0; i < total; i++){
+        const input = document.createElement('input');
+        input.className = 'slot';
+        input.type = 'text';
+        input.placeholder = `${i + 1}`;
+        input.addEventListener('input', syncWinnerSummary);
+        winnerGrid.appendChild(input);
+      }
+      syncWinnerSummary();
+    }
+
+    function syncWinnerSummary(){
+      const values = Array.from(winnerGrid.querySelectorAll('input')).map(el => el.value.trim()).filter(Boolean);
+      winnerCount.textContent = `${values.length} / ${total}`;
+      const chips = values.length ? values.slice(0, 10) : ['ยังไม่มีรายชื่อ'];
+      latestChips.innerHTML = chips.map(item => `<span class="chip-item">${escapeHtml(item)}</span>`).join('');
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function spinWheel(){
+      if(spinning) return;
+      spinning = true;
+      spinBtn.disabled = true;
+
+      const step = 360 / total;
+      const lockOn = lockResult.checked;
+      const forced = lockOn ? (forceIndex.value === '' ? Math.floor(Math.random() * total) : Number(forceIndex.value)) : Math.floor(Math.random() * total);
+      const winnerIndex = Number.isFinite(forced) ? forced : Math.floor(Math.random() * total);
+      const turns = 5 + Math.floor(Math.random() * 3);
+      const target = 360 - (winnerIndex * step) - (step / 2);
+
+      rotation += turns * 360 + target;
+      wheelRotate.style.transform = `rotate(${rotation}deg)`;
+
+      const winnerName = names[winnerIndex] || `คุณ ${winnerIndex + 1}`;
+      setTimeout(() => {
+        const text = `ผลลัพธ์: ${winnerIndex + 1}. ${winnerName}`;
+        resultText.textContent = text;
+        wheelResult.textContent = text;
+        spinning = false;
+        spinBtn.disabled = false;
+      }, 5000);
+    }
+
+    applyWheelNames.addEventListener('click', renderWheel);
+    resetWheelNames.addEventListener('click', () => {
+      wheelNamesInput.value = defaultWheelNames.join('\n');
+      renderWheel();
+    });
+    updateWinners.addEventListener('click', syncWinnerSummary);
+    fillEmptyWinner.addEventListener('click', () => {
+      const name = quickWinner.value.trim();
+      if(!name) return;
+      const empty = Array.from(winnerGrid.querySelectorAll('input')).find(i => !i.value.trim());
+      if(!empty){
+        const text = 'ช่องรายชื่อครบ 50 ช่องแล้ว';
+        resultText.textContent = text;
+        wheelResult.textContent = text;
+        return;
+      }
+      empty.value = name;
+      quickWinner.value = '';
+      syncWinnerSummary();
+      const text = `เพิ่มชื่อ: ${name}`;
+      resultText.textContent = text;
+      wheelResult.textContent = text;
+    });
+    clearWinners.addEventListener('click', () => {
+      Array.from(winnerGrid.querySelectorAll('input')).forEach(i => i.value = '');
+      syncWinnerSummary();
+      const text = 'ล้างรายชื่อเรียบร้อย';
+      resultText.textContent = text;
+      wheelResult.textContent = text;
+    });
+    spinBtn.addEventListener('click', spinWheel);
+    window.addEventListener('resize', () => renderWheel());
+
+    wheelNamesInput.value = defaultWheelNames.join('\n');
+    renderWheel();
+    buildWinnerGrid();
+  </script>
+</body>
+</html>
