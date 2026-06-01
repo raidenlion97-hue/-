@@ -428,6 +428,7 @@
     let names = [...defaultWheelNames];
     let rotation = 0;
     let spinning = false;
+    const POINTER_OFFSET = 0; // ปรับค่านี้ได้ ถ้าต้องชดเชยตำแหน่งอีกเล็กน้อย
 
     function polarToCartesian(cx, cy, r, angleDeg) {
       const rad = (angleDeg - 90) * Math.PI / 180;
@@ -527,8 +528,23 @@
         .replaceAll('&', '&amp;')
         .replaceAll('<', '&lt;')
         .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
+        .replaceAll('\"', '&quot;')
         .replaceAll("'", '&#39;');
+    }
+
+    function normalizeAngle(angle){
+      return ((angle % 360) + 360) % 360;
+    }
+
+    function getIndexUnderPointer(){
+      const step = 360 / total;
+      const angle = normalizeAngle(-rotation + POINTER_OFFSET);
+      return Math.floor(angle / step) % total;
+    }
+
+    function getRotationForIndex(index){
+      const step = 360 / total;
+      return normalizeAngle(360 - ((index + 0.5) * step) + POINTER_OFFSET);
     }
 
     function spinWheel(){
@@ -539,20 +555,21 @@
       const step = 360 / total;
       const lockOn = lockResult.checked;
       const forced = lockOn ? (forceIndex.value === '' ? Math.floor(Math.random() * total) : Number(forceIndex.value)) : Math.floor(Math.random() * total);
-      const winnerIndex = Number.isFinite(forced) ? forced : Math.floor(Math.random() * total);
+      const targetIndex = Number.isFinite(forced) ? forced : Math.floor(Math.random() * total);
       const turns = 5 + Math.floor(Math.random() * 3);
 
-      const desired = (360 - ((winnerIndex + 0.5) * step)) % 360;
-      const current = ((rotation % 360) + 360) % 360;
-      let delta = desired - current;
+      const desiredRotation = getRotationForIndex(targetIndex);
+      const currentRotation = normalizeAngle(rotation);
+      let delta = desiredRotation - currentRotation;
       if (delta < 0) delta += 360;
 
       rotation += turns * 360 + delta;
       wheelRotate.style.transform = `rotate(${rotation}deg)`;
 
-      const winnerName = names[winnerIndex] || `คุณ ${winnerIndex + 1}`;
       setTimeout(() => {
-        const text = `ผลลัพธ์: ${winnerIndex + 1}. ${winnerName}`;
+        const actualIndex = getIndexUnderPointer();
+        const finalName = names[actualIndex] || `คุณ ${actualIndex + 1}`;
+        const text = `ผลลัพธ์: ${actualIndex + 1}. ${finalName}`;
         resultText.textContent = text;
         wheelResult.textContent = text;
         spinning = false;
