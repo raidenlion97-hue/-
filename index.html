@@ -37,7 +37,7 @@
       border:1px solid rgba(255,255,255,.10);
       border-radius:28px;
       background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
 
@@ -244,9 +244,7 @@
       box-shadow:0 14px 28px rgba(241,196,91,.22);
     }
 
-    .panels{
-    display:block;
-}
+    .panels{display:grid; grid-template-columns:1fr; gap:14px; min-height:0}
     .panel{
       background:var(--panel); border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow);
       padding:16px; min-height:0; overflow:hidden;
@@ -266,7 +264,6 @@
       background:rgba(255,255,255,.08); color:var(--text); border:1px solid rgba(255,255,255,.12);
     }
     .mini-btn.primary{background:linear-gradient(135deg, var(--gold), #ffe8a8); color:#261800}
-    .mini-btn.success{background:linear-gradient(135deg, #1f6f48, #2a9b62); color:#effff5; border-color:rgba(126,240,199,.25)}
 
     .toggle-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px}
     .toggle-label{display:flex; align-items:center; gap:10px; font-weight:800; color:#fff}
@@ -278,27 +275,7 @@
       color:#ffe8af; font-size:.88rem; font-weight:800;
     }
 
-    .grid-50{
-      display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px;
-      max-height:430px; overflow:auto; padding-right:4px;
-    }
-    .grid-50 .slot{
-      width:100%; border-radius:12px; padding:10px 8px; text-align:center; font-size:.92rem;
-      background:rgba(255,255,255,.05); color:#e9ecf8; border:1px solid rgba(255,255,255,.09);
-    }
-    .grid-50 .slot::placeholder{color:rgba(255,255,255,.34)}
-
-    .latest{
-      grid-column:1 / -1; margin-top:2px; padding:14px 16px 12px;
-      border-radius:22px; border:1px solid var(--line); background:var(--panel);
-      box-shadow:var(--shadow);
-    }
-    .latest h4{margin:0 0 10px; font-size:1rem}
-    .chips{display:flex; gap:10px; overflow:auto; padding-bottom:6px}
-    .chip-item{
-      flex:0 0 auto; padding:10px 14px; border-radius:999px; background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10); color:#eef1ff; font-weight:800; white-space:nowrap;
-    }
+    .small-muted{color:var(--muted); font-size:.88rem}
 
     .bottom-info{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:auto}
     .info-card{
@@ -308,25 +285,21 @@
     .info-card .k{font-size:1.18rem; font-weight:900; color:#ffe39c; margin-bottom:8px}
     .info-card .v{color:var(--muted); line-height:1.6; font-size:.96rem}
 
-    .small-muted{color:var(--muted); font-size:.88rem}
-
     @media (max-width: 1240px){
       .grid{grid-template-columns:1fr}
       .left{border-right:none; border-bottom:1px solid rgba(255,255,255,.08)}
       .wheel-shell{width:min(900px, 96%)}
     }
     @media (max-width: 860px){
-      .feature-row,.bottom-info,.panels{grid-template-columns:1fr}
+      .feature-row,.bottom-info{grid-template-columns:1fr}
       .nav{justify-content:flex-start}
       .title{max-width:none}
-      .grid-50{grid-template-columns:repeat(2, minmax(0,1fr)); max-height:520px}
     }
     @media (max-width: 560px){
       .app{width:calc(100% - 8px)}
       .left,.right{padding:16px}
       .title{font-size:2.55rem}
       .wheel-shell{width:100%}
-      .grid-50{grid-template-columns:1fr}
       .spin-btn{font-size:1.05rem}
       .result-box{font-size:1rem; min-height:76px}
     }
@@ -348,13 +321,12 @@
             <div class="nav">
               <a href="#wheel">หมุนวงล้อ</a>
               <a href="#names">แก้ชื่อ</a>
-              <a href="#winners">ผู้โชคดี</a>
             </div>
           </div>
 
           <div class="hero">
             <h1 class="title">หมุนแล้ว <span>ลุ้นได้ทุกครั้ง</span></h1>
-            <p class="desc">เว็บวงล้อนำโชคแบบหน้าเดียว ปรับชื่อเองได้ หมุนจริงได้ มี 50 ช่องบนวงล้อ และมีรายชื่อผู้โชคดี 50 ช่องสำหรับกรอกชื่อได้ทันที</p>
+            <p class="desc">เว็บวงล้อนำโชคแบบหน้าเดียว ปรับชื่อเองได้ หมุนจริงได้ มี 50 ช่องบนวงล้อ</p>
             <div class="cta-row">
               <a class="btn btn-primary" href="#wheel">🎯 ไปหมุนเลย</a>
               <a class="btn btn-secondary" href="#names">✍️ ตั้งชื่อบนวงล้อ</a>
@@ -362,9 +334,9 @@
           </div>
 
           <div class="feature-row">
-            <div class="feature"><div class="icon">⚡</div><h4>กดได้จริง</h4><p>หมุนวงล้อพร้อมเอฟเฟกต์ลื่น ดูพรีเมียมเหมือนในภาพตัวอย่าง</p></div>
-            <div class="feature"><div class="icon">✏️</div><h4>ปรับแต่งได้</h4><p>เปลี่ยนชื่อบนวงล้อได้ตามต้องการ และเลือกชื่อที่จะหยุดได้</p></div>
-            <div class="feature"><div class="icon">👥</div><h4>50 ช่อง</h4><p>มีช่องรายชื่อผู้โชคดี 50 ช่อง พร้อมแสดงรายชื่อใหม่ด้านล่าง</p></div>
+            <div class="feature"><div class="icon">⚡</div><h4>กดได้จริง</h4><p>หมุนวงล้อพร้อมเอฟเฟกต์ลื่น ดูพรีเมียม</p></div>
+            <div class="feature"><div class="icon">✏️</div><h4>ปรับแต่งได้</h4><p>เปลี่ยนชื่อบนวงล้อได้ตามต้องการ</p></div>
+            <div class="feature"><div class="icon">👥</div><h4>50 ช่อง</h4><p>มี 50 ช่องบนวงล้อ</p></div>
           </div>
 
           <div class="result-card">
@@ -376,9 +348,9 @@
           </div>
 
           <div class="bottom-info">
-            <div class="info-card"><div class="k">กดได้จริง</div><div class="v">วงล้อพร้อมปุ่มหมุน เอฟเฟกต์สวย ลื่น และดูเด่นบนหน้าจอ</div></div>
-            <div class="info-card"><div class="k">ปรับเองได้</div><div class="v">เปลี่ยนชื่อบนวงล้อหรือรายชื่อผู้โชคดีได้ตามต้องการ</div></div>
-            <div class="info-card"><div class="k">50 ช่อง</div><div class="v">รายชื่อผู้โชคดี 50 ช่อง เพื่อให้ตรงกับแบบที่คุณต้องการ</div></div>
+            <div class="info-card"><div class="k">กดได้จริง</div><div class="v">วงล้อพร้อมปุ่มหมุน เอฟเฟกต์สวย</div></div>
+            <div class="info-card"><div class="k">ปรับเองได้</div><div class="v">เปลี่ยนชื่อบนวงล้อได้ตามต้องการ</div></div>
+            <div class="info-card"><div class="k">50 ช่อง</div><div class="v">รายชื่อ 50 ช่องบนวงล้อ</div></div>
           </div>
         </section>
 
@@ -386,7 +358,6 @@
           <div class="topbar">
             <a class="chip" href="#wheel">🔁 หมุนล้อ</a>
             <a class="chip" href="#names">✎ แก้ไขรายชื่อ</a>
-            <a class="chip" href="#winners">👥 ผู้โชคดี</a>
           </div>
 
           <div class="wheel-card" id="wheel">
@@ -404,29 +375,23 @@
             </div>
           </div>
 
-          <div class="panels" id="names">
-            <div class="panel">
-              <div class="count-row">
-                <h3>ตั้งชื่อบนวงล้อ</h3>
-                <div class="count-pill" id="wheelCount">50 รายการ</div>
-              </div>
-              <p class="hint">ใส่ชื่อ 50 รายการ แยกด้วยบรรทัดใหม่ แล้วกดอัปเดตเพื่อแสดงบนวงล้อ</p>
-              <textarea id="wheelNamesInput"></textarea>
-              <div class="toggle-row">
-                <label class="toggle-label"><input id="lockResult" type="checkbox" checked /> ล็อกผลการหมุน</label>
-                <span class="small-muted">ปิดได้ ถ้าต้องการสุ่มจริง</span>
-              </div>
-              <label class="small-muted" for="forceIndex">เลือกชื่อที่ต้องการล็อก</label>
-              <select id="forceIndex"></select>
-              <div class="btn-row">
-                <button class="mini-btn primary" id="applyWheelNames">อัปเดตชื่อบนวงล้อ</button>
-                <button class="mini-btn" id="resetWheelNames">คืนค่าเริ่มต้น</button>
-              </div>
+          <div class="panel" id="names">
+            <div class="count-row">
+              <h3>ตั้งชื่อบนวงล้อ</h3>
+              <div class="count-pill" id="wheelCount">50 รายการ</div>
             </div>
-
-          <div class="latest">
-            <h4>รายชื่อผู้โชคดีล่าสุด</h4>
-            <div class="chips" id="latestChips"></div>
+            <p class="hint">ใส่ชื่อ 50 รายการ แยกด้วยบรรทัดใหม่ แล้วกดอัปเดตเพื่อแสดงบนวงล้อ</p>
+            <textarea id="wheelNamesInput"></textarea>
+            <div class="toggle-row">
+              <label class="toggle-label"><input id="lockResult" type="checkbox" checked /> ล็อกผลการหมุน</label>
+              <span class="small-muted">ปิดได้ ถ้าต้องการสุ่มจริง</span>
+            </div>
+            <label class="small-muted" for="forceIndex">เลือกชื่อที่ต้องการล็อก</label>
+            <select id="forceIndex"></select>
+            <div class="btn-row">
+              <button class="mini-btn primary" id="applyWheelNames">อัปเดตชื่อบนวงล้อ</button>
+              <button class="mini-btn" id="resetWheelNames">คืนค่าเริ่มต้น</button>
+            </div>
           </div>
         </section>
       </div>
@@ -459,13 +424,6 @@
     const applyWheelNames = document.getElementById('applyWheelNames');
     const resetWheelNames = document.getElementById('resetWheelNames');
     const wheelCount = document.getElementById('wheelCount');
-    const winnerGrid = document.getElementById('winnerGrid');
-    const winnerCount = document.getElementById('winnerCount');
-    const latestChips = document.getElementById('latestChips');
-    const quickWinner = document.getElementById('quickWinner');
-    const updateWinners = document.getElementById('updateWinners');
-    const fillEmptyWinner = document.getElementById('fillEmptyWinner');
-    const clearWinners = document.getElementById('clearWinners');
 
     let names = [...defaultWheelNames];
     let rotation = 0;
@@ -562,26 +520,6 @@
       wheelResult.textContent = `อัปเดตชื่อบนวงล้อแล้ว: ${preview}${names.length > 5 ? ' ...' : ''}`;
     }
 
-    function buildWinnerGrid(){
-      winnerGrid.innerHTML = '';
-      for(let i = 0; i < total; i++){
-        const input = document.createElement('input');
-        input.className = 'slot';
-        input.type = 'text';
-        input.placeholder = `${i + 1}`;
-        input.addEventListener('input', syncWinnerSummary);
-        winnerGrid.appendChild(input);
-      }
-      syncWinnerSummary();
-    }
-
-    function syncWinnerSummary(){
-      const values = Array.from(winnerGrid.querySelectorAll('input')).map(el => el.value.trim()).filter(Boolean);
-      winnerCount.textContent = `${values.length} / ${total}`;
-      const chips = values.length ? values.slice(0, 10) : ['ยังไม่มีรายชื่อ'];
-      latestChips.innerHTML = chips.map(item => `<span class="chip-item">${escapeHtml(item)}</span>`).join('');
-    }
-
     function escapeHtml(str){
       return String(str)
         .replaceAll('&', '&amp;')
@@ -621,37 +559,11 @@
       wheelNamesInput.value = defaultWheelNames.join('\n');
       renderWheel();
     });
-    updateWinners.addEventListener('click', syncWinnerSummary);
-    fillEmptyWinner.addEventListener('click', () => {
-      const name = quickWinner.value.trim();
-      if(!name) return;
-      const empty = Array.from(winnerGrid.querySelectorAll('input')).find(i => !i.value.trim());
-      if(!empty){
-        const text = 'ช่องรายชื่อครบ 50 ช่องแล้ว';
-        resultText.textContent = text;
-        wheelResult.textContent = text;
-        return;
-      }
-      empty.value = name;
-      quickWinner.value = '';
-      syncWinnerSummary();
-      const text = `เพิ่มชื่อ: ${name}`;
-      resultText.textContent = text;
-      wheelResult.textContent = text;
-    });
-    clearWinners.addEventListener('click', () => {
-      Array.from(winnerGrid.querySelectorAll('input')).forEach(i => i.value = '');
-      syncWinnerSummary();
-      const text = 'ล้างรายชื่อเรียบร้อย';
-      resultText.textContent = text;
-      wheelResult.textContent = text;
-    });
     spinBtn.addEventListener('click', spinWheel);
     window.addEventListener('resize', () => renderWheel());
 
     wheelNamesInput.value = defaultWheelNames.join('\n');
     renderWheel();
-    buildWinnerGrid();
   </script>
 </body>
 </html>
