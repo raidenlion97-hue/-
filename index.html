@@ -214,7 +214,7 @@
     svg#wheelSvg{width:100%; height:100%; display:block; overflow:visible}
     .sector{stroke:rgba(255,255,255,.10); stroke-width:1.2}
     .number-text{
-      font-size:15px;
+      font-size:12px;
       font-weight:900;
       fill:#fff;
       paint-order:stroke;
@@ -482,7 +482,9 @@
         text.setAttribute('class', 'number-text');
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('dominant-baseline', 'middle');
-        text.setAttribute('transform', `rotate(${mid + 90} ${textPos.x} ${textPos.y})`);
+        let textRotation = mid + 90;
+        if (textRotation > 90 && textRotation < 270) textRotation += 180;
+        text.setAttribute('transform', `rotate(${textRotation} ${textPos.x} ${textPos.y})`);
         text.textContent = names[i] || String(i + 1);
         wheelSvg.appendChild(text);
 
@@ -539,7 +541,7 @@
       const forced = lockOn ? (forceIndex.value === '' ? Math.floor(Math.random() * total) : Number(forceIndex.value)) : Math.floor(Math.random() * total);
       const winnerIndex = Number.isFinite(forced) ? forced : Math.floor(Math.random() * total);
       const turns = 5 + Math.floor(Math.random() * 3);
-      const target = 360 - (winnerIndex * step) - (step / 2);
+      const target = 180 + 360 - (winnerIndex * step) - (step / 2);
 
       rotation += turns * 360 + target;
       wheelRotate.style.transform = `rotate(${rotation}deg)`;
