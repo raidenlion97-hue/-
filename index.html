@@ -408,47 +408,7 @@
     </defs>
   </svg>
 
-  <script>/* ===== Dropdown Dark Theme ===== */
-
-#forceIndex,
-select {
-    background: #1b2235 !important;
-    color: #ffffff !important;
-    border: 1px solid #404a66 !important;
-    border-radius: 12px;
-    padding: 12px;
-    font-weight: 700;
-}
-
-#forceIndex:focus,
-select:focus {
-    outline: none;
-    border-color: #f3d37a !important;
-    box-shadow: 0 0 12px rgba(243,211,122,.4);
-}
-
-/* รายการใน dropdown */
-#forceIndex option,
-select option {
-    background: #1b2235 !important;
-    color: #ffffff !important;
-    padding: 10px;
-}
-
-/* รายการที่เลือก */
-#forceIndex option:checked,
-select option:checked {
-    background: #f3d37a !important;
-    color: #000000 !important;
-    font-weight: bold;
-}
-
-/* Chrome */
-#forceIndex {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
+  <script>
     const total = 50;
     const colors = ['#f1c45b', '#1b2948', '#8bf0d0', '#6d4bd6'];
     const defaultWheelNames = Array.from({ length: total }, (_, i) => `คุณ ${i + 1}`);
@@ -617,12 +577,34 @@ select option:checked {
       }, 5000);
     }
 
-    applyWheelNames.addEventListener('click', renderWheel);
-    resetWheelNames.addEventListener('click', () => {
-      wheelNamesInput.value = defaultWheelNames.join('\n');
-      renderWheel();
-    });
-    spinBtn.addEventListener('click', spinWheel);
+    // ป้องกัน error ถ้าปุ่มบางตัวถูกลบออกจากหน้าเว็บ
+    if (applyWheelNames) {
+      applyWheelNames.addEventListener('click', renderWheel);
+    }
+
+    if (resetWheelNames) {
+      resetWheelNames.addEventListener('click', () => {
+        wheelNamesInput.value = defaultWheelNames.join('\n');
+        renderWheel();
+      });
+    }
+
+    if (spinBtn) {
+      spinBtn.addEventListener('click', spinWheel);
+    }
+
+    // คำนวณตำแหน่งลูกศรใหม่ให้ตรงกับผลที่ล็อกไว้
+    function getIndexUnderPointer(){
+      const step = 360 / total;
+      const angle = ((360 - (rotation % 360)) % 360);
+      return Math.floor(angle / step) % total;
+    }
+
+    function getRotationForIndex(index){
+      const step = 360 / total;
+      return (360 - ((index + 0.5) * step)) % 360;
+    }
+
     window.addEventListener('resize', () => renderWheel());
 
     wheelNamesInput.value = defaultWheelNames.join('\n');
