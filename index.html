@@ -183,7 +183,7 @@
     .pointer{
       position:absolute; top:8px; left:50%; transform:translateX(-50%); z-index:5;
       width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:34px solid #fff;
-      filter:drop-shadow(0 10px 18px rgba(0,0,0,.180));
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));
     }
 
     .wheel-wrap{display:grid; place-items:center; padding-top:14px;}
@@ -431,7 +431,7 @@
     const POINTER_OFFSET = 0; // ปรับค่านี้ได้ ถ้าต้องชดเชยตำแหน่งอีกเล็กน้อย
 
     function polarToCartesian(cx, cy, r, angleDeg) {
-      const rad = (angleDeg - 90) * Math.PI / 180;
+      const rad = (angleDeg - 90) * Math.PI / 90;
       return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
     }
 
