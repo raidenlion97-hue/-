@@ -436,7 +436,7 @@
     let names = [...defaultWheelNames];
     let rotation = 0;
     let spinning = false;
-    const POINTER_OFFSET = 0; // ปรับค่านี้ได้ ถ้าต้องชดเชยตำแหน่งอีกเล็กน้อย
+    const POINTER_OFFSET = 180; // ปรับค่านี้ได้ ถ้าต้องชดเชยตำแหน่งอีกเล็กน้อย
 
     function polarToCartesian(cx, cy, r, angleDeg) {
       const rad = (angleDeg - 90) * Math.PI / 180;
