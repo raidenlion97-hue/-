@@ -431,7 +431,7 @@
     const POINTER_OFFSET = 0; // ปรับค่านี้ได้ ถ้าต้องชดเชยตำแหน่งอีกเล็กน้อย
 
     function polarToCartesian(cx, cy, r, angleDeg) {
-      const rad = (angleDeg - 90) * Math.PI / 90;
+      const rad = (angleDeg - 90) * Math.PI / 180;
       return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
     }
 
