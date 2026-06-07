@@ -181,11 +181,10 @@
     }
 
     .pointer{
-    top:auto;
-    bottom:-15px;
-    left:50%;
-    transform:translateX(-50%) rotate(180deg);
-}
+      position:absolute; top:8px; left:50%; transform:translateX(-50%); z-index:5;
+      width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:34px solid #fff;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));
+    }
 
     .wheel-wrap{display:grid; place-items:center; padding-top:14px;}
     .wheel-shell{
